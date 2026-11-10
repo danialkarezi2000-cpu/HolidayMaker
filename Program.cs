@@ -14,17 +14,20 @@ while (running)
     switch (choice)
     {
         case "1":
-            Console.Write("Förnamn: ");
-            string name = Console.ReadLine()?.Trim() ?? "";
-            Console.Write("Efternamn: ");
-            string lastname = Console.ReadLine()?.Trim() ?? "";
-            Console.Write("E-post: ");
-            string email = Console.ReadLine()?.Trim() ?? "";
-            Console.Write("Telefon: ");
-            string tlf = Console.ReadLine()?.Trim() ?? "";
+            string name = Menu.ReadRequired("Förnamn: ");
+            string lastname = Menu.ReadRequired("Efternamn: ");
+            string email = Menu.ReadRequired("E-post: ");
+            string tlf = Menu.ReadRequired("Telefon: ");
 
-            long newId = await customerRepository.CreateCustomerAsync(name, lastname, email, tlf);
-            Console.WriteLine($"Kunden är registrerad med id {newId}");
+            try
+            {
+                long newId = await customerRepository.CreateCustomerAsync(name, lastname, email, tlf);
+                Console.WriteLine($"Kunden är registrerad med id {newId}");
+            }
+            catch (MySqlException ex) when (ex.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                Console.WriteLine("Den e-posten finns redan. Försök med en annan.");
+            }
             break;
         case "2":
             Console.WriteLine("Söker lediga rum kommer snart");

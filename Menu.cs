@@ -13,4 +13,19 @@ public static class Menu
         Console.WriteLine("0. Avsluta");
         Console.WriteLine("Välj: ");
     }
+
+    // Frågar tills användaren skriver något som inte är tomt
+    public static string ReadRequired(string prompt)
+    {
+        while (true)
+        {
+            Console.Write(prompt);
+            string input = Console.ReadLine()?.Trim() ?? "";
+            if (input != "")
+            {
+                return input;
+            }
+            Console.WriteLine("Fältet får inte vara tomt, försök igen.");
+        }
+    }
 }
