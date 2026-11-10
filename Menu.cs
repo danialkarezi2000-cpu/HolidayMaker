@@ -58,4 +58,17 @@ public static class Menu
             Console.WriteLine("Fel format. Skriv till exempel 2026-12-03.");
         }
     }
+
+    // frågar j/n och returnerar true om svaret är j
+    public static bool ReadYesNo(string prompt)
+    {
+        while (true)
+        {
+            Console.Write(prompt);
+            string answer = Console.ReadLine()?.Trim().ToLower() ?? "";
+            if (answer == "j") return true;
+            if (answer == "n") return false;
+            Console.WriteLine("Svara j eller n.");
+        }
+    }
 }

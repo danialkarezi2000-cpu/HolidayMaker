@@ -43,7 +43,13 @@ while (running)
             }
             int persons = Menu.ReadInt("Antal personer: ", 1);
 
-            var rooms = await roomRepository.SearchAvailableRoomsAsync(city, start, end, persons);
+            bool needPool = Menu.ReadYesNo("Måste hotellet ha pool? (j/n): ");
+            bool needRestaurant = Menu.ReadYesNo("Måste hotellet ha restaurang? (j/n): ");
+            int maxBeach = Menu.ReadInt("Max meter till stranden (0 = spelar ingen roll): ", 0);
+            int maxCenter = Menu.ReadInt("Max meter till centrum (0 = spelar ingen roll): ", 0);
+            bool sortByRating = Menu.ReadYesNo("Sortera på betyg istället för pris? (j/n): ");
+            var rooms = await roomRepository.SearchAvailableRoomsAsync(
+                city, start, end, persons, needPool, needRestaurant, maxBeach, maxCenter, sortByRating);
             if (rooms.Count == 0)
             {
                 Console.WriteLine("Inga lediga rum hittades.");

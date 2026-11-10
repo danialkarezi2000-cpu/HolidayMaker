@@ -4,10 +4,14 @@ public class RoomRepository(MySqlConnection connection)
 {
     // method som hämtar alla tillgängliga rum baserat på stad, startdatum, slutdatum och antal personer.
     public async Task<List<AvailableRoom>> SearchAvailableRoomsAsync(
-        string city, DateTime start, DateTime end, int persons)
+        string city, DateTime start, DateTime end, int persons,
+        bool needPool, bool needRestaurant, int maxBeach, int maxCenter, bool sortByRating)
     {
+        // sorteringen kan inte vara en @parameter, så vi väljer mellan två fasta texter (whitelist)
+        string orderBy = sortByRating ? "hotels.rating DESC" : "rooms.price ASC";
+
         await using var command = new MySqlCommand(
-            """
+            $"""
             SELECT rooms.id, rooms.name, rooms.capacity, rooms.price,
                    hotels.name AS hotel_name, cities.name AS city_name, hotels.rating
             FROM rooms
@@ -19,12 +23,20 @@ public class RoomRepository(MySqlConnection connection)
             )
               AND rooms.capacity >= @persons
               AND cities.name = @city
-            ORDER BY rooms.price;
+              AND (@needPool = 0 OR hotels.pool = 1)
+              AND (@needRestaurant = 0 OR hotels.restaurant = 1)
+              AND (@maxBeach = 0 OR hotels.distance_to_closest_beach <= @maxBeach)
+              AND (@maxCenter = 0 OR hotels.distance_to_closest_city_center <= @maxCenter)
+            ORDER BY {orderBy};
             """, connection);
         command.Parameters.AddWithValue("@city", city);
         command.Parameters.AddWithValue("@start", start);
         command.Parameters.AddWithValue("@end", end);
         command.Parameters.AddWithValue("@persons", persons);
+        command.Parameters.AddWithValue("@needPool", needPool);
+        command.Parameters.AddWithValue("@needRestaurant", needRestaurant);
+        command.Parameters.AddWithValue("@maxBeach", maxBeach);
+        command.Parameters.AddWithValue("@maxCenter", maxCenter);
         await command.PrepareAsync();
 
         await using var reader = await command.ExecuteReaderAsync();
