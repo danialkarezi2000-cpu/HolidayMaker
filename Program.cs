@@ -6,6 +6,7 @@ await using var connection = new MySqlConnection(connectionString);
 await connection.OpenAsync();
 var customerRepository = new CustomerRepository(connection);
 var roomRepository = new RoomRepository(connection);
+var bookingRepository = new BookingRepository(connection);
 long? loggedInCustomerId = null; // null = ingen är inloggad än
 Console.WriteLine("Koppla till databasen!");
 bool running = true;
@@ -61,8 +62,33 @@ while (running)
             }
             break;
         case "3":
-            Console.WriteLine("boka rum kommer snart");
+        {
+            if (loggedInCustomerId == null)
+            {
+                Console.WriteLine("Du måste logga in först (val 7) eller registrera dig (val 1).");
+                break;
+            }
+            int roomId = Menu.ReadInt("Rum-id (från sökningen): ", 1);
+            DateTime checkIn = Menu.ReadDate("Incheckning (ÅÅÅÅ-MM-DD): ");
+            DateTime checkOut = Menu.ReadDate("Utcheckning (ÅÅÅÅ-MM-DD): ");
+            if (checkOut <= checkIn)
+            {
+                Console.WriteLine("Utcheckning måste vara efter incheckning.");
+                break;
+            }
+            int guests = Menu.ReadInt("Antal personer: ", 1);
+            try
+            {
+                var (bookingId, totalPrice) = await bookingRepository.CreateBookingAsync(
+                    loggedInCustomerId.Value, roomId, checkIn, checkOut, guests);
+                Console.WriteLine($"Bokat! Bokningsnummer {bookingId}. Totalpris {totalPrice} kr.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             break;
+        }
         case "4":
             Console.WriteLine("Visa bokningar");
             break;
