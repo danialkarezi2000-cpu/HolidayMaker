@@ -29,4 +29,33 @@ public static class Menu
             Console.WriteLine("Fältet får inte vara tomt, försök igen.");
         }
     }
+
+    // Fråga tills användaren skriver ett heltal.
+    public static int ReadInt(string prompt, int min)
+    {
+        while (true)
+        {
+            Console.Write(prompt);
+            if (int.TryParse(Console.ReadLine(), out int value) && value >= min)
+            {
+                return value;
+            }
+            Console.WriteLine($"Skriv ett heltal som är minst {min}.");
+        }
+    }
+
+    // Fråga tills användaren skriver ett datum i formatet.
+    public static DateTime ReadDate(string prompt)
+    {
+        while (true)
+        {
+            Console.Write(prompt);
+            if (DateTime.TryParseExact(Console.ReadLine()?.Trim(), "yyyy-MM-dd", null,
+                System.Globalization.DateTimeStyles.None, out DateTime date))
+            {
+                return date;
+            }
+            Console.WriteLine("Fel format. Skriv till exempel 2026-12-03.");
+        }
+    }
 }

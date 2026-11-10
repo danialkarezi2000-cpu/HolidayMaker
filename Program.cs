@@ -5,6 +5,7 @@ $"server=localhost;Database=holiday_maker;User Id=root;Password={password};UseAf
 await using var connection = new MySqlConnection(connectionString);
 await connection.OpenAsync();
 var customerRepository = new CustomerRepository(connection);
+var roomRepository = new RoomRepository(connection);
 long? loggedInCustomerId = null; // null = ingen är inloggad än
 Console.WriteLine("Koppla till databasen!");
 bool running = true;
@@ -32,7 +33,26 @@ while (running)
             }
             break;
         case "2":
-            Console.WriteLine("Söker lediga rum kommer snart");
+            string city = Menu.ReadRequired("Stad: ");
+            DateTime start = Menu.ReadDate("Incheckning (ÅÅÅÅ-MM-DD): ");
+            DateTime end = Menu.ReadDate("Utcheckning (ÅÅÅÅ-MM-DD): ");
+            if (end <= start)
+            {
+                Console.WriteLine("Utcheckning måste vara efter incheckning.");
+                break;
+            }
+            int persons = Menu.ReadInt("Antal personer: ", 1);
+
+            var rooms = await roomRepository.SearchAvailableRoomsAsync(city, start, end, persons);
+            if (rooms.Count == 0)
+            {
+                Console.WriteLine("Inga lediga rum hittades.");
+            }
+            foreach (var room in rooms)
+            {
+                Console.WriteLine($"Rum-id {room.RoomId}: {room.HotelName} ({room.CityName}), rum {room.RoomName}, " +
+              $"{room.Capacity} pers, {room.Price} kr/natt, betyg {room.Rating}");
+            }
             break;
         case "3":
             Console.WriteLine("boka rum kommer snart");
