@@ -90,14 +90,36 @@ while (running)
             break;
         }
         case "4":
-            Console.WriteLine("Visa bokningar");
+        {
+            if (loggedInCustomerId == null) { Console.WriteLine("Logga in först (val 7)."); break; }
+            var myBookings = await bookingRepository.GetBookingsForCustomerAsync(loggedInCustomerId.Value);
+            if (myBookings.Count == 0) Console.WriteLine("Du har inga bokningar.");
+            foreach (var b in myBookings)
+            {
+                Console.WriteLine($"Bokning {b.BookingId}: {b.HotelName}, rum {b.RoomName}, " +
+                                  $"{b.Start:yyyy-MM-dd} till {b.End:yyyy-MM-dd}, {b.Persons} pers, {b.TotalPrice} kr");
+            }
             break;
+        }
         case "5":
-            Console.WriteLine("byta antal personer");
+        {
+            if (loggedInCustomerId == null) { Console.WriteLine("Logga in först (val 7)."); break; }
+            int changeId = Menu.ReadInt("Bokningsnummer: ", 1);
+            int newPersons = Menu.ReadInt("Nytt antal personer: ", 1);
+            bool changed = await bookingRepository.UpdatePersonsAsync(changeId, loggedInCustomerId.Value, newPersons);
+            Console.WriteLine(changed
+                ? "Antal personer är ändrat."
+                : "Gick inte: bokningen finns inte, är inte din, eller så får inte så många plats i rummet.");
             break;
+        }
         case "6":
-            Console.WriteLine("Avboka min bokning");
+        {
+            if (loggedInCustomerId == null) { Console.WriteLine("Logga in först (val 7)."); break; }
+            int cancelId = Menu.ReadInt("Bokningsnummer att avboka: ", 1);
+            bool deleted = await bookingRepository.DeleteBookingAsync(cancelId, loggedInCustomerId.Value);
+            Console.WriteLine(deleted ? "Bokningen är avbokad." : "Hittade ingen sådan bokning för dig.");
             break;
+        }
         case "7":
             string loginEmail = Menu.ReadRequired("E-post: ");
             loggedInCustomerId = await customerRepository.GetCustomerIdByEmailAsync(loginEmail);
