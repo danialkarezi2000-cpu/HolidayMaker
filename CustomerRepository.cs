@@ -14,4 +14,21 @@ public class CustomerRepository(MySqlConnection connection)
         await command.ExecuteNonQueryAsync();
         return command.LastInsertedId;
     }
+
+    // method som hämtar kundens id baserat på e-post
+    public async Task<long?> GetCustomerIdByEmailAsync(string email)
+    {
+        await using var command = new MySqlCommand(
+            "SELECT id FROM customers WHERE email = @email;", connection);
+        command.Parameters.AddWithValue("@email", email);
+
+        await command.PrepareAsync();
+        await using var reader = await command.ExecuteReaderAsync();
+
+        if (await reader.ReadAsync())
+        {
+            return reader.GetInt64("id");
+        }
+        return null;
+    }
 }

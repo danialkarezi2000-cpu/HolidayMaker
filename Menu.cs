@@ -10,6 +10,7 @@ public static class Menu
         Console.WriteLine("4. Visa mina bokningar");
         Console.WriteLine("5. Ändra antal personer");
         Console.WriteLine("6. Avboka");
+        Console.WriteLine("7. Logga in med e-post");
         Console.WriteLine("0. Avsluta");
         Console.WriteLine("Välj: ");
     }

@@ -5,6 +5,7 @@ $"server=localhost;Database=holiday_maker;User Id=root;Password={password};UseAf
 await using var connection = new MySqlConnection(connectionString);
 await connection.OpenAsync();
 var customerRepository = new CustomerRepository(connection);
+long? loggedInCustomerId = null; // null = ingen är inloggad än
 Console.WriteLine("Koppla till databasen!");
 bool running = true;
 while (running)
@@ -23,6 +24,7 @@ while (running)
             {
                 long newId = await customerRepository.CreateCustomerAsync(name, lastname, email, tlf);
                 Console.WriteLine($"Kunden är registrerad med id {newId}");
+                loggedInCustomerId = newId;
             }
             catch (MySqlException ex) when (ex.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
             {
@@ -43,6 +45,18 @@ while (running)
             break;
         case "6":
             Console.WriteLine("Avboka min bokning");
+            break;
+        case "7":
+            string loginEmail = Menu.ReadRequired("E-post: ");
+            loggedInCustomerId = await customerRepository.GetCustomerIdByEmailAsync(loginEmail);
+            if (loggedInCustomerId == null)
+            {
+                Console.WriteLine("Ingen kund med den e-posten. Registrera dig först (val 1).");
+            }
+            else
+            {
+                Console.WriteLine($"Inloggad som kund {loggedInCustomerId}");
+            }
             break;
         case "0":
             running = false;
