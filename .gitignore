@@ -1,0 +1,4 @@
+bin/
+obj/
+dbpassword.txt
+.DS_Store
