@@ -57,11 +57,7 @@ while (running)
             {
                 Console.WriteLine("Inga lediga rum hittades.");
             }
-            foreach (var room in rooms)
-            {
-                Console.WriteLine($"Rum-id {room.RoomId}: {room.HotelName} ({room.CityName}), rum {room.RoomName}, " +
-              $"{room.Capacity} pers, {room.Price} kr/natt, betyg {room.Rating}");
-            }
+            Menu.ShowRoomTable(rooms);
             break;
         case "3":
         {
@@ -96,11 +92,7 @@ while (running)
             if (loggedInCustomerId == null) { Console.WriteLine("Logga in först (val 7)."); break; }
             var myBookings = await bookingRepository.GetBookingsForCustomerAsync(loggedInCustomerId.Value);
             if (myBookings.Count == 0) Console.WriteLine("Du har inga bokningar.");
-            foreach (var b in myBookings)
-            {
-                Console.WriteLine($"Bokning {b.BookingId}: {b.HotelName}, rum {b.RoomName}, " +
-                                  $"{b.Start:yyyy-MM-dd} till {b.End:yyyy-MM-dd}, {b.Persons} pers, {b.TotalPrice} kr");
-            }
+            Menu.ShowBookingTable(myBookings);
             break;
         }
         case "5":

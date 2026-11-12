@@ -84,4 +84,30 @@ public static class Menu
         }
         Console.WriteLine();
     }
+
+    // skriver ut de lediga rummen som en tabell
+    public static void ShowRoomTable(List<AvailableRoom> rooms)
+    {
+        Console.WriteLine();
+        Console.WriteLine($"{"Id",-4}{"Hotell",-19}{"Stad",-9}{"Rum",-6}{"Pers",5}{"Pris",9}{"Betyg",6}");
+        foreach (var r in rooms)
+        {
+            Console.WriteLine($"{r.RoomId,-4}{r.HotelName,-19}{r.CityName,-9}{r.RoomName,-6}" +
+                              $"{r.Capacity,5}{r.Price,6:0} kr{r.Rating,6}");
+        }
+        Console.WriteLine();
+    }
+
+    // skriver ut kundens bokningar som en tabell
+    public static void ShowBookingTable(List<BookingInfo> bookings)
+    {
+        Console.WriteLine();
+        Console.WriteLine($"{"Nr",-4}{"Hotell",-19}{"Rum",-6}{"Från",-11}{"Till",-11}{"Pers",5}{"Totalt",10}");
+        foreach (var b in bookings)
+        {
+            Console.WriteLine($"{b.BookingId,-4}{b.HotelName,-19}{b.RoomName,-6}" +
+                              $"{b.Start,-11:yyyy-MM-dd}{b.End,-11:yyyy-MM-dd}{b.Persons,5}{b.TotalPrice,7:0} kr");
+        }
+        Console.WriteLine();
+    }
 }
