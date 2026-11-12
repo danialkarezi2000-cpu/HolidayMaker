@@ -1,3 +1,6 @@
+// Ett eget "fel" som betyder: användaren vill gå tillbaka till menyn
+public class GoBackException : Exception { }
+
 public static class Menu
 {
     public static void ShowMainMenu()
@@ -12,7 +15,19 @@ public static class Menu
         Console.WriteLine("6. Avboka");
         Console.WriteLine("7. Logga in med e-post");
         Console.WriteLine("0. Avsluta");
+        Console.WriteLine("(Skriv x när som helst för att gå tillbaka hit)");
         Console.WriteLine("Välj: ");
+    }
+
+    // Läser en rad. Om man skriver x går man tillbaka till menyn.
+    private static string Read()
+    {
+        string input = Console.ReadLine()?.Trim() ?? "";
+        if (input.ToLower() == "x")
+        {
+            throw new GoBackException();
+        }
+        return input;
     }
 
     // Frågar tills användaren skriver något som inte är tomt
@@ -21,7 +36,7 @@ public static class Menu
         while (true)
         {
             Console.Write(prompt);
-            string input = Console.ReadLine()?.Trim() ?? "";
+            string input = Read();
             if (input != "")
             {
                 return input;
@@ -36,7 +51,7 @@ public static class Menu
         while (true)
         {
             Console.Write(prompt);
-            if (int.TryParse(Console.ReadLine(), out int value) && value >= min)
+            if (int.TryParse(Read(), out int value) && value >= min)
             {
                 return value;
             }
@@ -50,7 +65,7 @@ public static class Menu
         while (true)
         {
             Console.Write(prompt);
-            if (DateTime.TryParseExact(Console.ReadLine()?.Trim(), "yyyy-MM-dd", null,
+            if (DateTime.TryParseExact(Read(), "yyyy-MM-dd", null,
                 System.Globalization.DateTimeStyles.None, out DateTime date))
             {
                 return date;
@@ -65,7 +80,7 @@ public static class Menu
         while (true)
         {
             Console.Write(prompt);
-            string answer = Console.ReadLine()?.Trim().ToLower() ?? "";
+            string answer = Read().ToLower();
             if (answer == "j") return true;
             if (answer == "n") return false;
             Console.WriteLine("Svara j eller n.");

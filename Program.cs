@@ -14,6 +14,8 @@ while (running)
 {
     Menu.ShowMainMenu();
     string? choice = Console.ReadLine()?.Trim();
+    try
+    {
     switch (choice)
     {
         case "1":
@@ -132,5 +134,10 @@ while (running)
         default:
             Console.WriteLine("Felaktigt val försök igen");
             break;
+    }
+    }
+    catch (GoBackException)
+    {
+        Console.WriteLine("Tillbaka till menyn.");
     }
 }
