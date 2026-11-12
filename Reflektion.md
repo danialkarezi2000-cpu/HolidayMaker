@@ -19,7 +19,9 @@ Jag sparar inte totalpriset i databasen, eftersom det räknas ut automatiskt: an
 
 Appen kan registrera kunder, logga in med e-post, söka lediga rum (stad, datum, antal personer) med filter för pool, restaurang och avstånd, och sortera på pris eller betyg. Kunden kan boka, se sina bokningar med totalpris, ändra antal personer och avboka.
 
-Jag har testat databasens begränsningar (CHECK, UNIQUE och FOREIGN KEY), och de stoppade felaktig data som de skulle (tester_databas.sql). Jag har också gjort 27 tester i appen (A1–A27), och alla blev godkända (testresultat.md). Några exempel: man kan boka samma dag som förra gästen checkar ut, en bokning som krockar med eller omsluter en annan nekas, en kund kan inte ändra någon annans bokning, och bokningar finns kvar efter omstart.
+Jag har testat databasens begränsningar (CHECK, UNIQUE och FOREIGN KEY), och de stoppade felaktig data som de skulle. Jag har också gjort 37 tester i appen (A1–A37), och alla blev godkända. Alla tester finns i Testdokumentation.md. Några exempel: man kan boka samma dag som förra gästen checkar ut, en bokning som krockar med eller omsluter en annan nekas, en kund kan inte ändra någon annans bokning, och bokningar finns kvar efter omstart.
+
+Efter min presentation fick jag förslag från seminariegruppen: att visa sökresultat och bokningar som tabeller och att kunna gå tillbaka till menyn. Jag lade till det och testade varje ändring själv (test A32–A37).
 
 Det svåraste var att koppla C# till databasen. Det jag är mest nöjd med är att jag lärde mig hur smidigt man kan skriva SQL med hjälp av tabellverktyget i DataGrip. Jag har också testat att skriva koden i konsolen, men det var inte lika spännande som att göra det med hjälp av tabellen. 🙂
 
@@ -32,4 +34,4 @@ Jag skulle också vilja ha riktig inloggning med lösenord. Nu räcker det att s
 ## 5. Hur jag har använt AI
 
 Jag har använt AI (Claude) under projektet. Mest har jag använt det för att lära mig, inte bara för att göra uppgiften färdig utan att förstå varför jag gjorde den. Claude har ställt frågor och gett exempel, och jag har själv svarat och fattat besluten. Till exempel visade Claude ett exempel med ett hotell där orten var felstavad, och jag kom själv fram till att det hotellet missas i sökningen. Därför valde jag en egen tabell för städer.
-Där jag hade svårt att komma vidare själv har jag också fått färdiga kod av AI
+Där jag hade svårt att komma vidare själv har jag också fått färdig kod av AI. Jag kontrollerade AI:ns kod genom att köra den och testa allt. AI hjälpte mig att planera testerna, men jag körde dem själv i appen och i DataGrip. Alla 37 tester finns i Testdokumentation.md.
