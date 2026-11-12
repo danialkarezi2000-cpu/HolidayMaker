@@ -59,7 +59,10 @@ while (running)
             {
                 Console.WriteLine("Inga lediga rum hittades.");
             }
-            Menu.ShowRoomTable(rooms);
+            else
+            {
+                Menu.ShowRoomTable(rooms);
+            }
             break;
         case "3":
         {
@@ -82,6 +85,8 @@ while (running)
                 var (bookingId, totalPrice) = await bookingRepository.CreateBookingAsync(
                     loggedInCustomerId.Value, roomId, checkIn, checkOut, guests);
                 Console.WriteLine($"Bokat! Bokningsnummer {bookingId}. Totalpris {totalPrice} kr.");
+                var allBookings = await bookingRepository.GetBookingsForCustomerAsync(loggedInCustomerId.Value);
+                Menu.ShowBookingTable(allBookings.FindAll(b => b.BookingId == bookingId));
             }
             catch (InvalidOperationException ex)
             {

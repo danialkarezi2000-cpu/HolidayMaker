@@ -15,15 +15,15 @@ public static class Menu
         Console.WriteLine("6. Avboka");
         Console.WriteLine("7. Logga in med e-post");
         Console.WriteLine("0. Avsluta");
-        Console.WriteLine("(Skriv x när som helst för att gå tillbaka hit)");
+        Console.WriteLine("(Skriv b när som helst för att gå tillbaka hit)");
         Console.WriteLine("Välj: ");
     }
 
-    // Läser en rad. Om man skriver x går man tillbaka till menyn.
+    // Läser en rad. Om man skriver b går man tillbaka till menyn.
     private static string Read()
     {
         string input = Console.ReadLine()?.Trim() ?? "";
-        if (input.ToLower() == "x")
+        if (input.ToLower() == "b")
         {
             throw new GoBackException();
         }
