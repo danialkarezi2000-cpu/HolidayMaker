@@ -50,4 +50,37 @@ public class RoomRepository(MySqlConnection connection)
         }
         return rooms;
     }
+
+    // hämtar alla hotell med stad, billigaste rum, avstånd, pool, restaurang och betyg
+    public async Task<List<HotelInfo>> GetHotelOverviewAsync()
+    {
+        await using var command = new MySqlCommand(
+            """
+            SELECT cities.name AS city_name, hotels.name AS hotel_name,
+                   MIN(rooms.price) AS min_price,
+                   hotels.distance_to_closest_beach, hotels.distance_to_closest_city_center,
+                   hotels.pool, hotels.restaurant, hotels.rating
+            FROM hotels
+            JOIN cities ON hotels.city_id = cities.id
+            JOIN rooms ON rooms.hotel_id = hotels.id
+            GROUP BY hotels.id, cities.name, hotels.name,
+                     hotels.distance_to_closest_beach, hotels.distance_to_closest_city_center,
+                     hotels.pool, hotels.restaurant, hotels.rating
+            ORDER BY cities.name, hotels.name;
+            """, connection);
+
+        await using var reader = await command.ExecuteReaderAsync();
+        var hotels = new List<HotelInfo>();
+        while (await reader.ReadAsync())
+        {
+            hotels.Add(new HotelInfo(
+                reader.GetString("city_name"), reader.GetString("hotel_name"),
+                reader.GetDecimal("min_price"),
+                reader.GetInt32("distance_to_closest_beach"),
+                reader.GetInt32("distance_to_closest_city_center"),
+                reader.GetBoolean("pool"), reader.GetBoolean("restaurant"),
+                reader.GetInt32("rating")));
+        }
+        return hotels;
+    }
 }

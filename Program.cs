@@ -34,6 +34,8 @@ while (running)
             }
             break;
         case "2":
+            var hotelList = await roomRepository.GetHotelOverviewAsync();
+            Menu.ShowHotelTable(hotelList);
             string city = Menu.ReadRequired("Stad: ");
             DateTime start = Menu.ReadDate("Incheckning (ÅÅÅÅ-MM-DD): ");
             DateTime end = Menu.ReadDate("Utcheckning (ÅÅÅÅ-MM-DD): ");

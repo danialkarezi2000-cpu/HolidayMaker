@@ -71,4 +71,17 @@ public static class Menu
             Console.WriteLine("Svara j eller n.");
         }
     }
+
+    // skriver ut hotellen som en tabell, så att man ser vilka städer man kan välja
+    public static void ShowHotelTable(List<HotelInfo> hotels)
+    {
+        Console.WriteLine();
+        Console.WriteLine($"{"Stad",-9}{"Hotell",-19}{"Pris",8}{"Strand",8}{"Centrum",8}{"Pool",5}{"Rest",5}{"Betyg",6}");
+        foreach (var h in hotels)
+        {
+            Console.WriteLine($"{h.CityName,-9}{h.HotelName,-19}{h.MinPrice,5:0} kr{h.Beach,6} m{h.Center,6} m" +
+                              $"{(h.Pool ? "ja" : "nej"),5}{(h.Restaurant ? "ja" : "nej"),5}{h.Rating,6}");
+        }
+        Console.WriteLine();
+    }
 }
