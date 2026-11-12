@@ -39,19 +39,25 @@ Skriv 'dotnet run' i terminalen
 | 7   | Logga in med e-post                                                                                               |
 | 0   | Avsluta                                                                                                           |
 
+Skriv **b** när som helst för att gå tillbaka till menyn.
+
 **Testa snabbt:** välj 7 och logga in med `anna@mail.se`. Välj sedan 2 och sök på Manila, 2026-12-03 till 2026-12-07, 3 personer.
 
 ## Filer
 
-| Fil                                  | Innehåll                                                                    |
-| ------------------------------------ | --------------------------------------------------------------------------- |
-| `Program.cs`                         | Kopplingen till databasen och menyn (switch)                                |
-| `Menu.cs`                            | Menytexten och säker inmatning (ReadRequired, ReadInt, ReadDate, ReadYesNo) |
-| `CustomerRepository.cs`              | Registrera kund och logga in                                                |
-| `RoomRepository.cs`                  | Sök lediga rum                                                              |
-| `BookingRepository.cs`               | Boka (transaktion), visa, ändra och avboka                                  |
-| `AvailableRoom.cs`, `BookingInfo.cs` | Records för resultaten                                                      |
-| `sql/`                               | schema.sql, testdata.sql och queries.sql                                    |
+| Fil | Innehåll |
+| --- | --- |
+| `Program.cs` | Kopplingen till databasen och menyn (switch) |
+| `Menu.cs` | Menytexten, säker inmatning (ReadRequired, ReadInt, ReadDate, ReadYesNo), b för tillbaka och tabellerna |
+| `CustomerRepository.cs` | Registrera kund och logga in |
+| `RoomRepository.cs` | Sök lediga rum och hämta hotellöversikten |
+| `BookingRepository.cs` | Boka (transaktion), visa, ändra och avboka |
+| `AvailableRoom.cs`, `BookingInfo.cs`, `HotelInfo.cs` | Records för resultaten |
+| `sql/` | schema.sql, testdata.sql och queries.sql |
+| `ER-diagram-individuell.webp` | Mitt E/R-diagram |
+| `ER-diagram-grupp.webp` | Gruppens E/R-diagram |
+| `Testdokumentation.md` | Alla tester (databastester och app-tester A1–A37) |
+| `Reflektion.md` | Min reflektion |
 
 ## Säkerhet
 
