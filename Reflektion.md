@@ -14,6 +14,7 @@ Jag sparar inte totalpriset i databasen, eftersom det räknas ut automatiskt: an
 - Lösenordet ligger i dbpassword.txt och inte i koden. Repot på GitHub är publikt. Om lösenordet låg i koden kunde vem som helst se det. Filen står i .gitignore.
 - Bokningen sker i en transaktion. Utan den kan ett rum bli dubbelbokat om två personer bokar samtidigt. Transaktionen kollar igen att rummet är ledigt och låser det tills bokningen är sparad.
 - customer_id = @customerId när man ändrar eller avbokar. Det hindrar en kund från att ändra eller avboka någon annans bokning (test A18).
+- Appen loggar in som holiday_app i stället för root. Den får bara läsa, lägga till, ändra och ta bort rader (SELECT, INSERT, UPDATE, DELETE). Den kan inte ta bort eller ändra tabellerna, så om något går fel kan appen inte förstöra databasen.
 
 ## 3. Resultat och tester
 
