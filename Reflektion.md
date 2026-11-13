@@ -32,7 +32,13 @@ Om jag hade mer tid skulle jag göra ett grafiskt gränssnitt i stället för en
 
 Jag skulle också vilja ha riktig inloggning med lösenord. Nu räcker det att skriva någons e-post för att se hens bokningar, och det är en säkerhetsbrist. Det fanns inte med i uppgiften, men i en riktig app skulle det behövas.
 
+Jag skulle också ändra indexet till (room_id, start_date, end_date), eftersom sökningen och bokningen alltid frågar efter ett visst rum och vissa datum. Då hittar databasen bokningarna snabbare.
+
+Appen borde också kontrollera att datumen ligger i december 2026, eftersom uppgiften säger att rummen bara kan bokas då. Nu kan man skriva till exempel 2030.
+
+Om någon skriver en mycket lång text, till exempel en e-post längre än 180 tecken, säger databasen nej och appen kraschar. Det borde appen kontrollera innan den sparar.
+
 ## 5. Hur jag har använt AI
 
 Jag har använt AI (Claude) under projektet. Mest har jag använt det för att lära mig, inte bara för att göra uppgiften färdig utan att förstå varför jag gjorde den. Claude har ställt frågor och gett exempel, och jag har själv svarat och fattat besluten. Till exempel visade Claude ett exempel med ett hotell där orten var felstavad, och jag kom själv fram till att det hotellet missas i sökningen. Därför valde jag en egen tabell för städer.
-Där jag hade svårt att komma vidare själv har jag också fått färdig kod av AI. Jag kontrollerade AI:ns kod genom att köra den och testa allt. AI hjälpte mig att planera testerna, men jag körde dem själv i appen och i DataGrip. Alla 37 tester finns i Testdokumentation.md.
+Där jag hade svårt att komma vidare själv har jag också fått färdig kod av AI. Jag kontrollerade AI:ns kod genom att köra den och testa allt. AI hjälpte mig att planera testerna, men jag körde dem själv i appen och i DataGrip. Alla 37 tester finns i Testdokumentation.md. Jag lät också AI granska min färdiga kod, och de tre sista förbättringarna i avsnitt 4 kom därifrån. Jag har läst dem och förstår varför de skulle göra appen bättre.
